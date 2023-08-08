@@ -34,6 +34,6 @@ resource "aws_instance" "rabitmq" {
   subnet_id = var.subnet_id
   user_data = templatefile("${path.module}/userdata.sh", {
     env       = var.env
-
+    component = var.component
   })
 }
