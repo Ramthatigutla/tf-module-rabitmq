@@ -25,7 +25,7 @@ resource "aws_security_group" "sg" {
     Name = "${var.component}-${var.env}-sg"
   }
 }
-resource "aws_instance" "rabitmq" {
+resource "aws_instance" "rabbitmq" {
   instance_type = var.instance_type
   ami = data.aws_ami.ami.id
   vpc_security_group_ids = [ aws_security_group.sg.id ]
@@ -36,15 +36,12 @@ resource "aws_instance" "rabitmq" {
     env       = var.env
     component = var.component
   })
-  root_block_device {
-    encrypted = true
-    kms_key_id = var.kms_key_id
-  }
+
 }
 resource "aws_route53_record" "rabbitmq" {
   zone_id = var.zone_id
   name    = "${var.component}-${var.env}"
   type    = "A"
   ttl     = 30
-  records = [ aws_instance.rabitmq.private_ip ]
+  records = [ aws_instance.rabbitmq.private_ip ]
 }
